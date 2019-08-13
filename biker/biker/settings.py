@@ -56,7 +56,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
+    'users',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
+# LOGIN_REDIRECT_URL = 'user/profile/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -68,12 +82,22 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+AUTHENTICATION_BACKENDS = (
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
 ROOT_URLCONF = 'biker.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            # Add the users template directory explicitly to be able to
+            # override the allauth templates without having an 'account'
+            # directory directly unser templates.
+            os.path.join(BASE_DIR, 'templates/users'),
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -85,6 +109,8 @@ TEMPLATES = [
         },
     },
 ]
+
+SITE_ID = 1
 
 WSGI_APPLICATION = 'biker.wsgi.application'
 
