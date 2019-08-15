@@ -58,11 +58,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
-    'users',
-
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+
+    'users',
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -70,7 +70,14 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
-# LOGIN_REDIRECT_URL = 'user/profile/'
+
+# Custom user model is located in the users app
+AUTH_USER_MODEL = 'users.CustomUser'
+
+# redirect locations after login and logout
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

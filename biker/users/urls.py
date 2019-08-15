@@ -18,9 +18,11 @@
 #
 
 from django.urls import path
-from django.views.generic import TemplateView
+
+from .views import ProfileView
+
 
 app_name = 'users'
 urlpatterns = [
-    path('profile/', TemplateView.as_view(template_name='users/profile.html')),
+    path('profile/', ProfileView.as_view(), name='profile'),
 ]

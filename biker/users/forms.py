@@ -17,17 +17,18 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
-from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import CustomUser
 
 
-class CustomUserAdmin(UserAdmin):
-    model = CustomUser
-    add_form = CustomUserCreationForm
-    form = CustomUserChangeForm
+class CustomUserCreationForm(UserCreationForm):
+    class Meta(UserCreationForm):
+        model = CustomUser
+        fields = ('username', 'email')
 
 
-admin.site.register(CustomUser, CustomUserAdmin)
+class CustomUserChangeForm(UserChangeForm):
+    class Meta(UserChangeForm):
+        model = CustomUser
+        fields = UserChangeForm.Meta.fields
