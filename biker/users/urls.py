@@ -19,10 +19,10 @@
 
 from django.urls import path
 
-from .views import ProfileView
-
+from .views import ProfileView, EnterRideView
 
 app_name = 'users'
 urlpatterns = [
     path('profile/', ProfileView.as_view(), name='profile'),
+    path('enter_ride/', EnterRideView.as_view(), name='enter_ride'),
 ]

@@ -16,9 +16,41 @@
 # License along with Biker. If not, see
 # <https://www.gnu.org/licenses/>.
 #
+from decimal import Decimal
+
+from django import views
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.views.generic import TemplateView
+
+from .models import Ride
+from .forms import EnterRideForm
 
 
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'users/profile.html'
+
+    def ride_list(self):
+        return Ride.objects.all()
+
+    def total_kilometers(self):
+        rides = Ride.objects.all()
+        ret = Decimal(0)
+        for r in rides:
+            ret += r.distance
+        return ret
+
+
+class EnterRideView(LoginRequiredMixin, views.View):
+    def get(self, request):
+        return render(request, 'enter_ride.html', {'form': EnterRideForm()})
+
+    def post(self, request):
+        form = EnterRideForm(request.POST)
+        if form.is_valid() and request.user.is_authenticated:
+            form.save(commit=False)
+            ride = form.instance
+            ride.user = request.user
+            ride.save()
+            return HttpResponseRedirect('/')

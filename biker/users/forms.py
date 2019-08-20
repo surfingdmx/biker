@@ -16,10 +16,10 @@
 # License along with Biker. If not, see
 # <https://www.gnu.org/licenses/>.
 #
-
+from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
-from .models import CustomUser
+from .models import CustomUser, Ride
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -32,3 +32,9 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm):
         model = CustomUser
         fields = UserChangeForm.Meta.fields
+
+
+class EnterRideForm(forms.ModelForm):
+    class Meta:
+        model = Ride
+        fields = ['date', 'start_time', 'end_time', 'distance', 'note']
