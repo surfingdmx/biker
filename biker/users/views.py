@@ -16,36 +16,49 @@
 # License along with Biker. If not, see
 # <https://www.gnu.org/licenses/>.
 #
-from decimal import Decimal
-
 from django import views
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.views.generic import TemplateView
 
 from .models import Ride
 from .forms import EnterRideForm
 
 
-class ProfileView(LoginRequiredMixin, TemplateView):
-    template_name = 'users/profile.html'
+class ProfileView(LoginRequiredMixin, views.View):
+    """A non-interactive view for displaying user data of the current logged user.
 
-    def ride_list(self):
-        return Ride.objects.all()
+    Primary, at least for the moment, this contains a list of all rides that the user has entered. The rides are shown
+    in a table and all distances are summed up.
+    """
 
-    def total_kilometers(self):
-        rides = Ride.objects.all()
-        ret = Decimal(0)
-        for r in rides:
-            ret += r.distance
-        return ret
+    """Handle a get request; fetches the corresponding rides from the DB and sums the distances."""
+    def get(self, request):
+        ride_list = Ride.objects.filter(user_id=request.user.id)
+        total_kilometers = sum(map(lambda r: r.distance, ride_list))
+        return render(request, 'profile.html', {
+            'ride_list': ride_list,
+            'total_kilometers': total_kilometers,
+        })
 
 
 class EnterRideView(LoginRequiredMixin, views.View):
+    """The view that is presented to the user when entering ride data.
+
+    This view contains a form with most of the fields of the Ride class (in fact all of the fields but the user). If the
+    application receives a get request, the page is simply rendered. On a post request, meaning the user has hit the
+    submit button, the form is validated and, if valid, a Ride object is created. After applying the current logged user
+    to this new ride object, it is saved to the DB.
+    """
+
+    """Handle a get request; this renders the EnterRideForm into the enter_ride template."""
     def get(self, request):
         return render(request, 'enter_ride.html', {'form': EnterRideForm()})
 
+    """Handle a post request.
+    
+    The form is validated and a new ride corresponding to the current user is saved to the DB.
+    """
     def post(self, request):
         form = EnterRideForm(request.POST)
         if form.is_valid() and request.user.is_authenticated:

@@ -14,7 +14,7 @@
         <th>Note</th>
     </tr>
 
-    {% for ride in view.ride_list %}
+    {% for ride in ride_list %}
         <tr>
             <td>{{ ride.date }}</td>
             <td>{{ ride.start_time }}</td>
@@ -26,5 +26,5 @@
 
 </table>
 
-<p>You have rocked <strong>{{ view.total_kilometers }}km</strong> in total. Congrats!</p>
+<p>You have rocked <strong>{{ total_kilometers }}km</strong> in total. Congrats!</p>
 {% endblock %}
