@@ -1,9 +1,56 @@
-{% if user.is_authenticated %}
-    <a href="{% url 'account_email' %}">Change E-mail</a>
-    <a href="{% url 'account_logout' %}">Sign Out</a>
-    <a href="{% url 'users:profile' %}">Your Profile</a>
-    <a href="{% url 'users:enter_ride' %}">Enter Ride</a>
-{% else %}
-    <a href="{% url 'account_login' %}">Sign In</a>
-    <a href="{% url 'account_signup' %}">Sign Up</a>
-{% endif %}
+{% load static %}
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <!-- <a class="navbar-brand" href="/"><img src="{% static 'images/placeholder.png' %}" width="25" height="25" /></a>-->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbarNavDropdown" class="navbar-collapse collapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/"><img src="{% static 'images/placeholder.png' %}" width="30" height="30" /></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/">Biker</a>
+            </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Ranking</a>
+                </li>
+            {% endif %}
+        </ul>
+        <ul class="navbar-nav">
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'users:enter_ride' %}">Routes & Rides</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Challenges</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Groups</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'users:profile' %}">Profile</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                        <img src="{% static 'images/placeholder.png' %}" width="30" height="30" />
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right float-right">
+                        <a class="dropdown-item" href="{% url 'account_email' %}">Settings</a>
+                        <a class="dropdown-item" href="{% url 'account_logout' %}">Sign Out</a>
+                    </div>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'account_login' %}">Sign In</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
