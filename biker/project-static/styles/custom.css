@@ -1,0 +1,32 @@
+/* Navbar styling
+-------------------------------------------------- */
+.nav-link {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.navbar {
+    padding: 0.3rem;
+}
+.navbar-nav > li > a {
+    line-height: 35px;
+}
+
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 40px;
+  background-color: #cccccc;
+}
