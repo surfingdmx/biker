@@ -1,7 +1,6 @@
 {% load static %}
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <!-- <a class="navbar-brand" href="/"><img src="{% static 'images/placeholder.png' %}" width="25" height="25" /></a>-->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -12,7 +11,7 @@
                 <a class="nav-link" href="/"><img src="{% static 'images/placeholder.png' %}" width="30" height="30" /></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/">Biker</a>
+                <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="/">Biker</a>
             </li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
@@ -23,7 +22,8 @@
         <ul class="navbar-nav">
             {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'users:enter_ride' %}">Routes & Rides</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'enter_ride' %}active{% endif %}"
+                       href="{% url 'users:enter_ride' %}">Routes & Rides</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Challenges</a>
@@ -32,7 +32,8 @@
                     <a class="nav-link" href="#">Groups</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'users:profile' %}">Profile</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'profile' %}active{% endif %}"
+                       href="{% url 'users:profile' %}">Profile</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
@@ -45,10 +46,12 @@
                 </li>
             {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'account_signup' %}active{% endif %}"
+                       href="{% url 'account_signup' %}">Sign Up</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_login' %}">Sign In</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'account_login' %}active{% endif %}"
+                       href="{% url 'account_login' %}">Sign In</a>
                 </li>
             {% endif %}
         </ul>
