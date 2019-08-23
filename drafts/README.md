@@ -27,6 +27,8 @@ This diagram was created with [Umlet](https://www.umlet.com/), a simple UML tool
 
 ## UI
 
-Nothing for now, as soon as the basics of the basics run properly, I will put some time into making it look less horrible :)
+Currently, the application uses bootstrap CSS framework with the default theme, there has been no effort in customizing it so far. There is project in progress on pulling all existent views into this styling.
+
+There are still many issues with the design itself and having a CSS framework at hand does not mean you don't have to create a decent layout by deciding of visible elements and their positioning :)
 
 If someone feels like sketching some views they are highly appreciated! See the contributing section in the main README file.
