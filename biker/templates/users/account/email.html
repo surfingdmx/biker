@@ -18,7 +18,7 @@
 
 <br><br>
 <h4>Your email addresses</h4>
-<form class="email_list" method="POST" action="{% url 'users:custom_email' %}">
+<form id="list_form" class="email_list" method="POST" action="{% url 'users:custom_email' %}">
     {% csrf_token %}
     <table class="table table-striped">
         <thead>
@@ -59,7 +59,8 @@
                                 name="action_send_{{ forloop.counter0 }}">Re-send Verification</button>
                     {% endif %}
                     {% if not emailaddress.primary %}
-                        <button type="submit" class="btn btn-outline-danger btn-sm"
+                        <button type="button" class="btn btn-outline-danger btn-sm del-button"
+                                data-toggle="modal" data-target="#confirm-delete"
                                 name="action_remove_{{ forloop.counter0 }}">Delete</button>
                     {% endif %}
                 </td>
@@ -68,20 +69,38 @@
         </tbody>
     </table>
 </form>
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                Confirm Delete
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the selected email address?
+            </div>
+
+            <div class="modal-footer">
+                <button id="del-cancel-button" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a href="#" id="del-submit-button" class="btn btn-danger success">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block body_scripts %}
 <script type="text/javascript">
-(function() {
-    let message = "Do you really want to remove the selected e-mail address?";
-    let actions = document.getElementsByName('action_remove');
-    if (actions.length) {
-        actions[0].addEventListener("click", function(e) {
-            if (! confirm(message)) {
-                e.preventDefault();
-            }
-        });
-    }
-})();
+$('.del-button').click(function () {
+    $('#list_form').append('<input id="del-name-hidden" type="hidden" name="' + $(this).attr('name') + '" /> ')
+});
+
+$('#del-submit-button').click(function() {
+    $('#list_form').submit();
+});
+
+$('#del-cancel-button').click(function () {
+    $('#list_form').remove('#del-name-hidden');
+})
 </script>
 {% endblock %}

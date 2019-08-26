@@ -94,7 +94,6 @@ class CustomEmailView(EmailView):
                     break
                 elif re.match(r'^action_primary_\d+$', str(action)):
                     idx = int(re.findall(r'_\d+$', str(action))[0][1:])
-                    print(str(idx) + '  --  ' + str(addresses))
                     request.POST['email'] = addresses[idx].email
                     res = super(CustomEmailView, self)._action_primary(request, *args, **kwargs)
                     break
