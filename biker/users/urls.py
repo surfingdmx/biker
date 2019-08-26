@@ -19,10 +19,12 @@
 
 from django.urls import path
 
-from .views import ProfileView, EnterRideView
+from .views import ProfileView, EnterRideView, CustomEmailView
 
 app_name = 'users'
 urlpatterns = [
+    path('mail/', CustomEmailView.as_view(), name='custom_email'),
+
     path('profile/', ProfileView.as_view(), name='profile'),
     path('enter_ride/', EnterRideView.as_view(), name='enter_ride'),
 ]

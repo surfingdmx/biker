@@ -16,6 +16,10 @@
 # License along with Biker. If not, see
 # <https://www.gnu.org/licenses/>.
 #
+import re
+
+from allauth.account.models import EmailAddress
+from allauth.account.views import EmailView
 from django import views
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
@@ -67,3 +71,32 @@ class EnterRideView(LoginRequiredMixin, views.View):
             ride.user = request.user
             ride.save()
             return HttpResponseRedirect('/')
+
+
+class CustomEmailView(EmailView):
+    def post(self, request, *args, **kwargs):
+        res = None
+        if "action_add" in request.POST:
+            res = super(CustomEmailView, self).post(request, *args, **kwargs)
+        else:
+            addresses = EmailAddress.objects.filter(user=request.user)
+            request.POST = request.POST.copy()
+            for action in request.POST:
+                if re.match(r'^action_send_\d+$', str(action)):
+                    idx = int(re.findall(r'_\d+$', str(action))[0][1:])
+                    request.POST['email'] = addresses[idx].email
+                    res = super(CustomEmailView, self)._action_send(request, *args, **kwargs)
+                    break
+                elif re.match(r'^action_remove_\d+$', str(action)):
+                    idx = int(re.findall(r'_\d+$', str(action))[0][1:])
+                    request.POST['email'] = addresses[idx].email
+                    res = super(CustomEmailView, self)._action_remove(request, *args, **kwargs)
+                    break
+                elif re.match(r'^action_primary_\d+$', str(action)):
+                    idx = int(re.findall(r'_\d+$', str(action))[0][1:])
+                    print(str(idx) + '  --  ' + str(addresses))
+                    request.POST['email'] = addresses[idx].email
+                    res = super(CustomEmailView, self)._action_primary(request, *args, **kwargs)
+                    break
+            res = res or HttpResponseRedirect(self.success_url)
+        return res
