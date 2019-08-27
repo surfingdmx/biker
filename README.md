@@ -59,7 +59,7 @@ $ git clone https://github.com/surfingdmx/biker.git
 $ cd biker
 $ virtualenv -p python3 venv
 $ . venv/bin/activate
-(venv) $ pip3 install -r requrements.txt
+(venv) $ pip3 install -r requirements.txt
 (venv) $ cd biker
 (venv) $ python3 manage.py migrate
 (venv) $ python3 manage.py createsuperuser
