@@ -32,17 +32,15 @@ from .forms import EnterRideForm
 class ProfileView(LoginRequiredMixin, views.View):
     """A non-interactive view for displaying user data of the current logged user.
 
-    Primary, at least for the moment, this contains a list of all rides that the user has entered. The rides are shown
-    in a table and all distances are summed up.
+    Non-interactive means that there is no form on the page where the user can enter any data. There are links to the
+    corresponding locations if the user wants to enter data.
     """
 
-    """Handle a get request; fetches the corresponding rides from the DB and sums the distances."""
+    """Handle a get request; fetches the most recent rides of the user for displaying them in a table."""
     def get(self, request):
-        ride_list = Ride.objects.filter(user_id=request.user.id)
-        total_kilometers = sum(map(lambda r: r.distance, ride_list))
+        ride_list = Ride.objects.filter(user_id=request.user.id).order_by('date', 'start_time')[:10]
         return render(request, 'profile.html', {
             'ride_list': ride_list,
-            'total_kilometers': total_kilometers,
         })
 
 
