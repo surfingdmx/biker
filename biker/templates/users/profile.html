@@ -40,21 +40,21 @@
 <table class="table table-striped" style="margin-top:15px">
     <thead>
         <tr>
-            <th scope="col">Date</th>
-            <th scope="col">Start Time</th>
-            <th scope="col">End Time</th>
+            <th scope="col">Name</th>
             <th scope="col">Distance</th>
+            <th scope="col">Start</th>
+            <th scope="col">Destination</th>
             <th>Note</th>
         </tr>
     </thead>
     <tbody>
-        {% for ride in ride_list %}
+        {% for route in route_list %}
             <tr>
-                <td class="align-middle">{{ ride.date }}</td>
-                <td class="align-middle">{{ ride.start_time }}</td>
-                <td class="align-middle">{{ ride.end_time }}</td>
-                <td class="align-middle">{{ ride.distance }}km</td>
-                <td class="align-middle">{{ ride.note }}</td>
+                <td class="align-middle">{{ route.name }}</td>
+                <td class="align-middle">{{ route.distance }}km</td>
+                <td class="align-middle">{{ route.start_name }}</td>
+                <td class="align-middle">{{ route.destination_name }}</td>
+                <td class="align-middle">{{ route.note }}</td>
             </tr>
         {% endfor %}
     </tbody>

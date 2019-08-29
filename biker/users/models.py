@@ -67,3 +67,40 @@ class Ride(models.Model):
 
     """A short text that the user may specify to recognize the ride later on."""
     note = models.CharField(max_length=200)
+
+
+class Route(models.Model):
+    """Provide shareable template for rides.
+
+    A route is selectable by the user when he/she enters a ride. It saves them from looking up & typing the distance
+    and automatically saves start and destination location (if the user wants to). Thus, the mandatory fields of a route
+    is a (per-user) unique name and a distance. Optionally, the user can include the start and destination location.
+
+    For the future there are plans to extend this class by geodata. This would mean that a user can save a GPS-track for
+    a route.
+    """
+
+    """Associated user"""
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    # TODO: unique for user only; should only be unique for user so independent user routes can have identical names
+    """Name of the route serving as identifier."""
+    name = models.CharField(max_length=200, unique=True)
+
+    """The date the route was created"""
+    creation_date = models.DateField(auto_now_add=True)
+
+    """The date the route was last modified"""
+    last_mod_date = models.DateField(auto_now=True)
+
+    """Distance in kilometers with 1 decimal place"""
+    distance = models.DecimalField(max_digits=4, decimal_places=1)
+
+    """Name of the start location"""
+    start_name = models.CharField(max_length=200, blank=True)
+
+    """Name of the destination location"""
+    destination_name = models.CharField(max_length=200, blank=True)
+
+    """Short text for notes of the user"""
+    note = models.CharField(max_length=200, blank=True)

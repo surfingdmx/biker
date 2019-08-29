@@ -25,8 +25,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
-from .models import Ride
-from .forms import EnterRideForm
+from .models import Ride, Route
+from .forms import EnterRideForm, EnterRouteForm
 
 
 class ProfileView(LoginRequiredMixin, views.View):
@@ -39,8 +39,10 @@ class ProfileView(LoginRequiredMixin, views.View):
     """Handle a get request; fetches the most recent rides of the user for displaying them in a table."""
     def get(self, request):
         ride_list = Ride.objects.filter(user_id=request.user.id).order_by('date', 'start_time')[:10]
+        route_list = Route.objects.filter(user_id=request.user.id).order_by('name')[:10]
         return render(request, 'profile.html', {
             'ride_list': ride_list,
+            'route_list': route_list,
         })
 
 
@@ -69,6 +71,25 @@ class EnterRideView(LoginRequiredMixin, views.View):
             ride.user = request.user
             ride.save()
             return HttpResponseRedirect('/')
+
+
+class EnterRouteView(LoginRequiredMixin, views.View):
+    """The view that is presented to the user when entering a route."""
+
+    """Handle a get request; this renders the EnterRouteForm into the enter_route template."""
+    def get(self, request):
+        return render(request, 'enter_route.html')
+
+    """Handle a post request."""
+    def post(self, request):
+        form = EnterRouteForm(request.POST)
+        if form.is_valid() and request.user.is_authenticated:
+            form.save(commit=False)
+            route = form.instance
+            route.user = request.user
+            route.save()
+            return HttpResponseRedirect('/')
+        return HttpResponseRedirect('/')
 
 
 class CustomEmailView(EmailView):

@@ -21,9 +21,14 @@
         </ul>
         <ul class="navbar-nav">
             {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'enter_ride' %}active{% endif %}"
-                       href="{% url 'users:enter_ride' %}">Routes & Rides</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle {% if request.resolver_match.url_name == 'enter_ride' %}active{% endif %}"
+                       href="#" data-toggle="dropdown">Routes & Rides</a>
+                    <div class="dropdown-menu dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'users:enter_ride' %}">Enter Ride</a>
+                        <a class="dropdown-item" href="{% url 'users:enter_route' %}">Enter Route</a>
+                        <a class="dropdown-item" href="#">Manage Routes</a>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Challenges</a>

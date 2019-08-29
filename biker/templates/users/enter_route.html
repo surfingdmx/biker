@@ -1,0 +1,30 @@
+{% extends '_base.html' %}
+
+{% block body %}
+<h4>Enter Route</h4>
+
+<form action="{% url 'users:enter_route' %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="nameInput">Name of the route</label>
+        <input type="text" name="name" class="form-control" id="nameInput" placeholder="Enter the name of the route" autofocus>
+    </div>
+    <div class="form-group">
+        <label for="distanceInput">Distance in km</label>
+        <input type="number" name="distance" class="form-control" id="distanceInput" min="0.1" value="0.1" step="0.1">
+    </div>
+    <div class="form-group">
+        <label for="startNameInput">Name of the starting location (Optional)</label>
+        <input type="text" name="start_name" class="form-control" id="startNameInput" placeholder="Name of the starting location (Optional)">
+    </div>
+    <div class="form-group">
+        <label for="destinationNameInput">Name of the destination (Optional)</label>
+        <input type="text" name="destination_name" class="form-control" id="destinationNameInput" placeholder="Name of the destination (Optional)">
+    </div>
+    <div class="form-group">
+        <label for="noteInput">Note for yourself</label>
+        <input type="text" name="note" class="form-control" id="noteInput" placeholder="Note">
+    </div>
+    <button type="submit" class="btn btn-primary float-right">Create Route</button>
+</form>
+{% endblock %}

@@ -19,7 +19,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
-from .models import CustomUser, Ride
+from .models import CustomUser, Ride, Route
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -38,3 +38,9 @@ class EnterRideForm(forms.ModelForm):
     class Meta:
         model = Ride
         fields = ['date', 'start_time', 'end_time', 'distance', 'note']
+
+
+class EnterRouteForm(forms.ModelForm):
+    class Meta:
+        model = Route
+        fields = ['name', 'distance', 'start_name', 'destination_name', 'note']
