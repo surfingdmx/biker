@@ -57,7 +57,8 @@ class EnterRideView(LoginRequiredMixin, views.View):
 
     """Handle a get request; this renders the EnterRideForm into the enter_ride template."""
     def get(self, request):
-        return render(request, 'enter_ride.html', {'form': EnterRideForm()})
+        route_list = Route.objects.filter(user_id=request.user.id).order_by('name')
+        return render(request, 'enter_ride.html', {'route_list': route_list})
 
     """Handle a post request.
     
@@ -69,6 +70,12 @@ class EnterRideView(LoginRequiredMixin, views.View):
             form.save(commit=False)
             ride = form.instance
             ride.user = request.user
+            if request.POST['route-dist'] == 'route':
+                ride.route = Route.objects.get(user_id=request.user.id, name=request.POST['route'])
+                ride.distance = None
+            elif request.POST['route-dist'] == 'dist':
+                ride.distance = request.POST['distance']
+                ride.route = None
             ride.save()
             return HttpResponseRedirect('/')
 

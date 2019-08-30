@@ -37,7 +37,7 @@ class CustomUserChangeForm(UserChangeForm):
 class EnterRideForm(forms.ModelForm):
     class Meta:
         model = Ride
-        fields = ['date', 'start_time', 'end_time', 'distance', 'note']
+        fields = ['date', 'start_time', 'end_time', 'note']
 
 
 class EnterRouteForm(forms.ModelForm):

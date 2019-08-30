@@ -43,32 +43,6 @@ class CustomUser(AbstractUser):
     total_amount_of_kilometers = models.DecimalField(default=0.0, max_digits=7, decimal_places=1)
 
 
-class Ride(models.Model):
-    """Represent a single ride of a user.
-
-    This class combines the properties of a ride: the user who has completed it, the date, start time, end time,
-    distance and a custom note.
-    """
-
-    """Associated user"""
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-
-    """The date that the ride was taken on"""
-    date = models.DateField(default=date.today)
-
-    """The time that the ride was started"""
-    start_time = models.TimeField(default=timezone.now)
-
-    """The time the ride was ended. This may be on the next day."""
-    end_time = models.TimeField(default=timezone.now)
-
-    """The distance that was travelled, in kilometers with 1 decimal place."""
-    distance = models.DecimalField(max_digits=4, decimal_places=1)
-
-    """A short text that the user may specify to recognize the ride later on."""
-    note = models.CharField(max_length=200)
-
-
 class Route(models.Model):
     """Provide shareable template for rides.
 
@@ -103,4 +77,33 @@ class Route(models.Model):
     destination_name = models.CharField(max_length=200, blank=True)
 
     """Short text for notes of the user"""
+    note = models.CharField(max_length=200, blank=True)
+
+
+class Ride(models.Model):
+    """Represent a single ride of a user.
+
+    This class combines the properties of a ride: the user who has completed it, the date, start time, end time,
+    distance and a custom note.
+    """
+
+    """Associated user"""
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    """The date that the ride was taken on"""
+    date = models.DateField(default=date.today)
+
+    """The time that the ride was started"""
+    start_time = models.TimeField(default=None, blank=True, null=True)
+
+    """The time the ride was ended. This may be on the next day."""
+    end_time = models.TimeField(default=None, blank=True, null=True)
+
+    """The distance that was travelled, in kilometers with 1 decimal place."""
+    distance = models.DecimalField(max_digits=4, decimal_places=1, blank=True, null=True)
+
+    """Route that was taken; if not null, this eliminates the need for separate distance."""
+    route = models.ForeignKey(Route, on_delete=models.CASCADE, blank=True, null=True)
+
+    """A short text that the user may specify to recognize the ride later on."""
     note = models.CharField(max_length=200, blank=True)

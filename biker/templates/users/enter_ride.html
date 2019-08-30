@@ -1,13 +1,64 @@
 {% extends '_base.html' %}
 
 {% block body %}
+<ul class="nav nav-pills mb-3" id="route-dist-tabs" role="tablist">
+    <li style="margin-right:10px">Select 'Route' if you did a route, or 'Distance' for a one-time-ride:</li>
+    <li class="nav-item">
+        <a class="nav-link active" id="pills-route-tab" data-toggle="pill" href="#pills-route" role="tab">Route</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="pills-dist-tab" data-toggle="pill" href="#pills-dist" role="tab">Distance</a>
+    </li>
+</ul>
+
 <form action="{% url 'users:enter_ride' %}" method="post">
     {% csrf_token %}
-    {{ form.date }}<br>
-    {{ form.start_time }}<br>
-    {{ form.end_time }}<br>
-    {{ form.distance }}<br>
-    {{ form.note }}<br>
-    <input type="submit" value="Submit">
+    <div class="form-group">
+        <label for="dateInput">Date (e.g. 12.05.2023)</label>
+        <input type="text" name="date" class="form-control" id="dateInput">
+    </div>
+    <div class="tab-content" id="pills-tab-content">
+        <div class="tab-pane fade show active" id="pills-route" role="tabpanel">
+            <div class="form-group">
+                <label for="routeSelect">Select your Route</label>
+                <select class="form-control" name="route" id="routeSelect">
+                    {% for route in route_list %}
+                        <option>{{ route.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="tab-pane fade show" id="pills-dist" role="tabpanel">
+            <div class="form-group">
+                <label for="distanceInput">Distance in km</label>
+                <input type="number" name="distance" class="form-control" id="distanceInput" min="0.1" value="0.1" step="0.1">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="startTimeInput">Start Time</label>
+        <input type="text" name="start_time" class="form-control" id="startTimeInput">
+    </div>
+    <div class="form-group">
+        <label for="endTimeInput">End Time</label>
+        <input type="text" name="end_time" class="form-control" id="endTimeInput">
+    </div>
+    <div class="form-group">
+        <label for="noteInput">Note</label>
+        <input type="text" name="note" class="form-control" id="noteInput">
+    </div>
+    <input type="hidden" name="route-dist" id="route-dist" value="route">
+    <button type="submit" class="btn btn-primary float-right">Create Ride</button>
 </form>
+{% endblock %}
+
+{% block body_scripts %}
+<script>
+    $('#pills-route-tab').on('click', function(e) {
+        $('#route-dist').val('route');
+    });
+    $('#pills-dist-tab').on('click', function(e) {
+        $('#route-dist').val('dist');
+    });
+</script>
 {% endblock %}

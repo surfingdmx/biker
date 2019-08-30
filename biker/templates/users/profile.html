@@ -21,10 +21,16 @@
         {% for ride in ride_list %}
             <tr>
                 <td class="align-middle">{{ ride.date }}</td>
-                <td class="align-middle">{{ ride.start_time }}</td>
-                <td class="align-middle">{{ ride.end_time }}</td>
-                <td class="align-middle">{{ ride.distance }}km</td>
-                <td class="align-middle">{{ ride.note }}</td>
+                <td class="align-middle">{% if ride.start_time is not None %}{{ ride.start_time }}{% endif %}</td>
+                <td class="align-middle">{% if ride.end_time is not None %}{{ ride.end_time }}{% endif %}</td>
+                <td class="align-middle">
+                    {% if ride.distance is not None %}
+                        {{ ride.distance }}km
+                    {% elif ride.route is not None%}
+                        {{ ride.route.distance }}km
+                    {% endif %}
+                </td>
+                <td class="align-middle">{% if ride.route is not None %}Route '{{ ride.route.name }}'{% else %}{{ ride.note }}{% endif %}</td>
             </tr>
         {% endfor %}
     </tbody>
